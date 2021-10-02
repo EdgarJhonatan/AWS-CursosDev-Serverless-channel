@@ -1,0 +1,498 @@
+{
+  "service": {
+    "service": "group01-medics-channel-dev-cf",
+    "serviceObject": {
+      "name": "group01-medics-channel-dev-cf"
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs14.x",
+      "region": "us-east-2",
+      "stage": "dev",
+      "apiGateway": {
+        "restApiId": "bvzis63juc",
+        "restApiRootResourceId": "6w2vlpcj5g",
+        "minimumCompressionSize": 1024,
+        "shouldStartNameWithService": true
+      },
+      "deploymentBucket": "group01-delga-dev-lambda-channel",
+      "iam": {
+        "role": "arn:aws:iam::431224282472:role/aws-group01-role-lambdas-channel-dev"
+      },
+      "environment": {
+        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+      },
+      "lambdaHashingVersion": "20201221",
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "group01-delga-dev-lambda-channel",
+        "serverSideEncryption": "AES256"
+      },
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "HelloLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/group01-medics-channel-dev-cf-dev-hello"
+            }
+          },
+          "ListLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/group01-dev-channel-list-medics"
+            }
+          },
+          "HelloLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "group01-delga-dev-lambda-channel",
+                "S3Key": "serverless/group01-medics-channel-dev-cf/dev/1633187062689-2021-10-02T15:04:22.689Z/group01-medics-channel-dev-cf.zip"
+              },
+              "Handler": "src/functions/hello/handler.main",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "group01-medics-channel-dev-cf-dev-hello",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+                }
+              },
+              "Role": "arn:aws:iam::431224282472:role/aws-group01-role-lambdas-channel-dev",
+              "Layers": [
+                "arn:aws:lambda:us-east-2:431224282472:layer:baseLayer:1"
+              ]
+            },
+            "DependsOn": [
+              "HelloLogGroup"
+            ]
+          },
+          "ListLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "group01-delga-dev-lambda-channel",
+                "S3Key": "serverless/group01-medics-channel-dev-cf/dev/1633187062689-2021-10-02T15:04:22.689Z/group01-medics-channel-dev-cf.zip"
+              },
+              "Handler": "src/functions/list/handler.main",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "group01-dev-channel-list-medics",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+                }
+              },
+              "Role": "arn:aws:iam::431224282472:role/aws-group01-role-lambdas-channel-dev",
+              "Layers": [
+                "arn:aws:lambda:us-east-2:431224282472:layer:baseLayer:1"
+              ]
+            },
+            "DependsOn": [
+              "ListLogGroup"
+            ]
+          },
+          "HelloLambdaVersion5BJSKs9MhsPgyfgJ5o17P0CFqhvsakCnvEKh9PI": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "HelloLambdaFunction"
+              },
+              "CodeSha256": "Jg0Tjw8ppCCVNBUsCuRG4G+vBobwsV/zeX27JhrrwlU="
+            }
+          },
+          "ListLambdaVersionekP0n8usCOuDZ1iXSw32BdzmUBOy5gQSL1EIV23vDjo": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "ListLambdaFunction"
+              },
+              "CodeSha256": "Jg0Tjw8ppCCVNBUsCuRG4G+vBobwsV/zeX27JhrrwlU="
+            }
+          },
+          "ApiGatewayResourceHello": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": "6w2vlpcj5g",
+              "PathPart": "hello",
+              "RestApiId": "bvzis63juc"
+            }
+          },
+          "ApiGatewayResourceMedics": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": "6w2vlpcj5g",
+              "PathPart": "medics",
+              "RestApiId": "bvzis63juc"
+            }
+          },
+          "ApiGatewayMethodHelloPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceHello"
+              },
+              "RestApiId": "bvzis63juc",
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "HelloLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": [],
+              "RequestValidatorId": {
+                "Ref": "ApiGatewayGroup01medicschanneldevcfRequestValidator"
+              },
+              "RequestModels": {
+                "application/json": {
+                  "Ref": "ApiGatewayMethodHelloPostApplicationJsonModel"
+                }
+              }
+            },
+            "DependsOn": [
+              "HelloLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodMedicsGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceMedics"
+              },
+              "RestApiId": "bvzis63juc",
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "ListLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "ListLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayGroup01medicschanneldevcfRequestValidator": {
+            "Type": "AWS::ApiGateway::RequestValidator",
+            "Properties": {
+              "RestApiId": "bvzis63juc",
+              "ValidateRequestBody": true,
+              "ValidateRequestParameters": true,
+              "Name": "group01-medics-channel-dev-cf-dev | Validate request body and querystring parameters"
+            }
+          },
+          "ApiGatewayMethodHelloPostApplicationJsonModel": {
+            "Type": "AWS::ApiGateway::Model",
+            "Properties": {
+              "RestApiId": "bvzis63juc",
+              "ContentType": "application/json",
+              "Schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          },
+          "ApiGatewayDeployment1633187054629": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": "bvzis63juc",
+              "StageName": "dev"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodHelloPost",
+              "ApiGatewayMethodMedicsGet"
+            ]
+          },
+          "HelloLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "HelloLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    "bvzis63juc",
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "ListLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ListLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    "bvzis63juc",
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "group01-delga-dev-lambda-channel",
+            "Export": {
+              "Name": "sls-group01-medics-channel-dev-cf-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "HelloLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "HelloLambdaVersion5BJSKs9MhsPgyfgJ5o17P0CFqhvsakCnvEKh9PI"
+            },
+            "Export": {
+              "Name": "sls-group01-medics-channel-dev-cf-dev-HelloLambdaFunctionQualifiedArn"
+            }
+          },
+          "ListLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "ListLambdaVersionekP0n8usCOuDZ1iXSw32BdzmUBOy5gQSL1EIV23vDjo"
+            },
+            "Export": {
+              "Name": "sls-group01-medics-channel-dev-cf-dev-ListLambdaFunctionQualifiedArn"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  "bvzis63juc",
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/dev"
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-group01-medics-channel-dev-cf-dev-ServiceEndpoint"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "webpack": {
+        "webpackConfig": "./webpack.config.js",
+        "includeModules": false
+      },
+      "channel": {
+        "name": "group01"
+      },
+      "lambda": {
+        "type": "channel"
+      },
+      "regionName": {
+        "dev": "us-east-2",
+        "qa": "us-east-2",
+        "prod": "us-east-1"
+      }
+    },
+    "plugins": [
+      "serverless-webpack"
+    ],
+    "pluginsData": {},
+    "functions": {
+      "hello": {
+        "handler": "src/functions/hello/handler.main",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"HelloLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "events": [
+          {
+            "http": {
+              "method": "post",
+              "path": "hello",
+              "request": {
+                "schema": {
+                  "application/json": {
+                    "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ApiGatewayMethodHelloPostApplicationJsonModel\"][\"Properties\"][\"Schema\"]"
+                  }
+                }
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "group01-medics-channel-dev-cf-dev-hello",
+        "package": {
+          "artifact": ".serverless/group01-medics-channel-dev-cf.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "HelloLambdaVersion5BJSKs9MhsPgyfgJ5o17P0CFqhvsakCnvEKh9PI"
+      },
+      "list": {
+        "handler": "src/functions/list/handler.main",
+        "name": "group01-dev-channel-list-medics",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ListLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "events": [
+          {
+            "http": {
+              "method": "get",
+              "path": "medics",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "package": {
+          "artifact": ".serverless/group01-medics-channel-dev-cf.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "ListLambdaVersionekP0n8usCOuDZ1iXSw32BdzmUBOy5gQSL1EIV23vDjo"
+      }
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless.ts",
+    "initialServerlessConfig": {
+      "service": {
+        "$ref": "$[\"service\"][\"serviceObject\"]"
+      },
+      "frameworkVersion": "2",
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
+      },
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      }
+    },
+    "layers": {},
+    "isDashboardMonitoringPreconfigured": false
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/group01-medics-channel-dev-cf/dev/1633187062689-2021-10-02T15:04:22.689Z",
+    "artifact": ""
+  }
+}
